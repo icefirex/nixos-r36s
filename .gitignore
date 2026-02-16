@@ -1,0 +1,18 @@
+result
+result-*
+
+# IDE
+.idea/
+
+# Driver build artifacts
+drivers/*.o
+drivers/*.ko
+drivers/*.mod
+drivers/*.mod.c
+drivers/Module.symvers
+drivers/modules.order
+drivers/.*cmd
+drivers/.*.o
+
+# Test files
+panel-nv3051d.txt
