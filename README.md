@@ -33,15 +33,31 @@
 
 ## Quick Start
 
-### Prerequisites
+### Download a pre-built image
 
+Grab the latest SD card image from the [Releases](https://github.com/icefirex/nixos-r36s/releases) page:
+
+```bash
+# Download and decompress
+zstd -d nixos-r36s-sd-card.img.zst
+
+# Flash (replace /dev/sdX with your SD card device)
+sudo dd if=nixos-r36s-sd-card.img of=/dev/sdX bs=4M status=progress conv=fsync
+```
+
+> **Warning:** Double-check the target device. `dd` will silently overwrite whatever you point it at.
+
+Eject the card, insert it into the R36S, and power on.
+
+### Build from source
+
+If you want to customize the configuration or build the image yourself:
+
+**Prerequisites:**
 - **NixOS or Nix** with flakes enabled on an x86_64-linux host
 - An SD card (16 GB+ recommended; image is ~3.3 GB)
-- `dd` or a similar tool for flashing
 
 > Cross-compilation is configured in the flake (`buildPlatform = x86_64-linux`, `hostPlatform = aarch64-linux`), so no QEMU or aarch64 hardware is needed for building.
-
-### Build
 
 ```bash
 git clone https://github.com/icefirex/nixos-r36s.git
@@ -49,18 +65,13 @@ cd nixos-r36s
 nix build .#nixosConfigurations.r36s.config.system.build.sdImage
 ```
 
-The first build cross-compiles the kernel and takes a while. Subsequent builds are incremental.
+The first build cross-compiles the kernel and takes a while. Subsequent builds are incremental. The output image lands at:
 
-### Flash
-
-```bash
-sudo dd if=./result/sd-image/nixos-image-sd-card-*-aarch64-linux.img \
-  of=/dev/sdX bs=4M status=progress conv=fsync
+```
+./result/sd-image/nixos-image-sd-card-*-aarch64-linux.img
 ```
 
-> **Warning:** Double-check the target device. `dd` will silently overwrite whatever you point it at.
-
-Eject the card, insert it into the R36S, and power on.
+Flash it with the same `dd` command as above.
 
 ---
 
